@@ -2,7 +2,11 @@ package model.graph
 
 import kotlin.collections.getOrPut
 
-internal class DirectedGraph<V, E> : Graph<V, E> {
+import model.graph.base.Vertex
+import model.graph.base.Edge
+import model.graph.base.Graph
+
+internal class DirectedGraph<E, V> : Graph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, Edge<E, V>>()
 

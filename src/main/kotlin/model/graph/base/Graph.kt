@@ -1,6 +1,6 @@
-package model.graph
+package model.graph.base
 
-interface Graph<V, E> {
+interface Graph<E, V> {
     val vertices: Collection<Vertex<V>>
     val edges: Collection<Edge<E, V>>
 

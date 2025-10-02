@@ -1,4 +1,4 @@
-package model.graph
+package model.graph.base
 
 interface Edge<E, V> {
     var element: E
