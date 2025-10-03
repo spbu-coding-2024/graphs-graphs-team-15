@@ -29,6 +29,17 @@ internal class WeightedUndirectedGraph<E, V> : WeightedGraph<E, V> {
         return _edges.getOrPut(e) { edge }
     }
 
+    override fun removeEdge(e: E): Boolean {
+        return _edges.remove(e) != null
+    }
+
+    override fun removeVertex(v: V): Boolean {
+        val vertex = _vertices.remove(v) ?: return false
+        val toRemove = _edges.filterValues { it.incident(vertex) }.keys
+        toRemove.forEach { _edges.remove(it) }
+        return true
+    }
+
     override fun setEdgeWeight(e: E, weight: Double) {
         _edges[e]?.weight = weight
     }
@@ -37,7 +48,7 @@ internal class WeightedUndirectedGraph<E, V> : WeightedGraph<E, V> {
         return _edges[e]?.weight
     }
 
-    private data class WeightedUndirectedVertex<V>(override var element: V) : WeightedVertex<V>
+    private data class WeightedUndirectedVertex<V>(override var label: V) : WeightedVertex<V>
 
     private data class WeightedUndirectedEdge<V, E>(
         override var element: E,

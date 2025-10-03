@@ -22,7 +22,18 @@ internal class UndirectedGraph<E, V> : Graph<E, V> {
         return _edges.getOrPut(e) { UndirectedEdge(e, first, second) }
     }
 
-    private data class UndirectedVertex<V>(override var element: V) : Vertex<V>
+    override fun removeEdge(e: E): Boolean {
+        return _edges.remove(e) != null
+    }
+
+    override fun removeVertex(v: V): Boolean {
+        val vertex = _vertices.remove(v) ?: return false
+        val toRemove = _edges.filterValues { it.incident(vertex) }.keys
+        toRemove.forEach { _edges.remove(it) }
+        return true
+    }
+
+    private data class UndirectedVertex<V>(override var label: V) : Vertex<V>
 
     private data class UndirectedEdge<E, V>(
         override var element: E,
