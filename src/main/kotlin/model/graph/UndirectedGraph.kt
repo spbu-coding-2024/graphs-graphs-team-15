@@ -1,9 +1,25 @@
 package model.graph
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import model.graph.base.Vertex
 import model.graph.base.Edge
 import model.graph.base.Graph
 
+@Serializable
+internal data class UndirectedVertex<V>(override var label: V) : Vertex<V>
+
+@Serializable
+internal data class UndirectedEdge<E, V>(
+    override var element: E,
+    var first: Vertex<V>,
+    var second: Vertex<V>,
+) : Edge<E, V> {
+    override val vertices
+        get() = first to second
+}
+@Serializable
+@SerialName("UndirectedGraph")
 internal class UndirectedGraph<E, V> : Graph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, Edge<E, V>>()
@@ -31,16 +47,5 @@ internal class UndirectedGraph<E, V> : Graph<E, V> {
         val toRemove = _edges.filterValues { it.incident(vertex) }.keys
         toRemove.forEach { _edges.remove(it) }
         return true
-    }
-
-    private data class UndirectedVertex<V>(override var label: V) : Vertex<V>
-
-    private data class UndirectedEdge<E, V>(
-        override var element: E,
-        var first: Vertex<V>,
-        var second: Vertex<V>,
-    ) : Edge<E, V> {
-        override val vertices
-            get() = first to second
     }
 }

@@ -1,9 +1,27 @@
 package model.graph
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import model.graph.weighted.WeightedVertex
 import model.graph.weighted.WeightedEdge
 import model.graph.weighted.WeightedGraph
 
+@Serializable
+private data class WeightedUndirectedVertex<V>(override var label: V) : WeightedVertex<V>
+
+@Serializable
+private data class WeightedUndirectedEdge<V, E>(
+    override var element: E,
+    val first: WeightedVertex<V>,
+    val second: WeightedVertex<V>,
+    override var weight: Double
+) : WeightedEdge<E, V> {
+    override val vertices
+        get() = first to second
+}
+
+@Serializable
+@SerialName("WeightedUndirectedGraph")
 internal class WeightedUndirectedGraph<E, V> : WeightedGraph<E, V> {
     private val _vertices = hashMapOf<V, WeightedVertex<V>>()
     private val _edges = hashMapOf<E, WeightedEdge<E, V>>()
@@ -46,17 +64,5 @@ internal class WeightedUndirectedGraph<E, V> : WeightedGraph<E, V> {
 
     override fun getEdgeWeight(e: E): Double? {
         return _edges[e]?.weight
-    }
-
-    private data class WeightedUndirectedVertex<V>(override var label: V) : WeightedVertex<V>
-
-    private data class WeightedUndirectedEdge<V, E>(
-        override var element: E,
-        val first: WeightedVertex<V>,
-        val second: WeightedVertex<V>,
-        override var weight: Double
-    ) : WeightedEdge<E, V> {
-        override val vertices
-            get() = first to second
     }
 }

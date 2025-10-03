@@ -1,11 +1,28 @@
 package model.graph
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlin.collections.getOrPut
 
 import model.graph.base.Vertex
 import model.graph.base.Edge
 import model.graph.base.Graph
 
+@Serializable
+internal data class DirectedVertex<V>(override var label: V) : Vertex<V>
+
+@Serializable
+internal data class DirectedEdge<E, V>(
+    override var element: E,
+    val from: Vertex<V>,
+    val to: Vertex<V>,
+) : Edge<E, V> {
+    override val vertices
+        get() = from to to
+}
+
+@Serializable
+@SerialName("DirectedGraph")
 internal class DirectedGraph<E, V> : Graph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, Edge<E, V>>()
@@ -33,16 +50,5 @@ internal class DirectedGraph<E, V> : Graph<E, V> {
         val toRemove = _edges.filterValues { it.incident(vertex) }.keys
         toRemove.forEach { _edges.remove(it) }
         return true
-    }
-
-    private data class DirectedVertex<V>(override var label: V) : Vertex<V>
-
-    private data class DirectedEdge<E, V>(
-        override var element: E,
-        val from: Vertex<V>,
-        val to: Vertex<V>,
-    ) : Edge<E, V> {
-        override val vertices
-            get() = from to to
     }
 }

@@ -1,6 +1,5 @@
 package model.graph.weighted
 
-import model.graph.base.Edge
 import model.graph.base.Graph
 
 interface WeightedGraph<E, V> : Graph<E, V> {
