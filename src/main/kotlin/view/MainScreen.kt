@@ -1,6 +1,8 @@
 package view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.runtime.Composable
@@ -8,12 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.sp
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
+fun MainScreen(viewModel: MainScreenViewModel<String, String>) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -39,17 +43,21 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
                 )
             }
             Button(
-                onClick = viewModel::setVerticesColor,
-                enabled = true,
+                onClick = { viewModel.applyLayoutAlgorithm(800.dp, 600.dp) },
+                enabled = true
             ) {
-                Text(
-                    text = "Set colors",
-                )
+                Text("Apply layout algorithm")
+            }
+            Button(
+                onClick = viewModel::findBridges,
+                enabled = true
+            ) {
+                Text("Highlight Bridges")
             }
         }
 
         Surface(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) {
             GraphView(viewModel.graphViewModel)
         }

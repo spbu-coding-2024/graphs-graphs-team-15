@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import viewmodel.GraphColors
 import viewmodel.graph.EdgeViewModel
 
 @Composable
@@ -26,7 +27,8 @@ fun <E, V> EdgeView(
                 viewModel.v.x.toPx() + viewModel.v.radius.toPx(),
                 viewModel.v.y.toPx() + viewModel.v.radius.toPx(),
             ),
-            color = Color.Black
+            color = viewModel.color,
+            strokeWidth = 2.0f
         )
     }
     if (viewModel.labelVisible) {

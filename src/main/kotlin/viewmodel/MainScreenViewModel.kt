@@ -3,11 +3,11 @@ package viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import model.graph.Graph
+import androidx.compose.ui.unit.Dp
+import model.graph.base.Graph
 import viewmodel.graph.GraphViewModel
-import viewmodel.graph.RepresentationStrategy
 
-class MainScreenViewModel<V, E>(graph: Graph<V, E>, private val representationStrategy: RepresentationStrategy) {
+class MainScreenViewModel<E, V>(graph: Graph<E, V>) {
     private var _showVerticesLabels = mutableStateOf(false)
     var showVerticesLabels: Boolean
         get() = _showVerticesLabels.value
@@ -24,16 +24,16 @@ class MainScreenViewModel<V, E>(graph: Graph<V, E>, private val representationSt
 
     val graphViewModel = GraphViewModel(graph, _showVerticesLabels, _showEdgesLabels)
 
-    init {
-        representationStrategy.place(800.0, 600.0, graphViewModel.vertices)
-    }
-
     fun resetGraphView() {
-        representationStrategy.place(800.0, 600.0, graphViewModel.vertices)
-        graphViewModel.vertices.forEach { v -> v.color = Color.Gray }
+        graphViewModel.vertices.forEach { v -> v.color = GraphColors.Vertex.unfocused }
+        graphViewModel.edges.forEach { e -> e.color = GraphColors.Edge.default }
     }
 
-    fun setVerticesColor() {
-        representationStrategy.highlight(graphViewModel.vertices)
+    fun applyLayoutAlgorithm(screenWidth: Dp, screenHeight: Dp) {
+        graphViewModel.applyForceAtlas2(screenWidth, screenHeight)
+    }
+
+    fun findBridges() {
+        graphViewModel.highlightBridges()
     }
 }
