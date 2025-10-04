@@ -51,4 +51,9 @@ internal class DirectedGraph<E, V> : Graph<E, V> {
         toRemove.forEach { _edges.remove(it) }
         return true
     }
+
+    override fun clear() {
+        _vertices.clear()
+        _edges.clear()
+    }
 }

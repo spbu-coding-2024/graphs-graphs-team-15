@@ -65,4 +65,9 @@ internal class WeightedUndirectedGraph<E, V> : WeightedGraph<E, V> {
     override fun getEdgeWeight(e: E): Double? {
         return _edges[e]?.weight
     }
+
+    override fun clear() {
+        _vertices.clear()
+        _edges.clear()
+    }
 }

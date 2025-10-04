@@ -1,3 +1,5 @@
+package model.graph.io
+
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import model.graph.DirectedGraph
@@ -7,9 +9,6 @@ import model.graph.WeightedUndirectedGraph
 import java.io.File
 
 import model.graph.base.Graph
-import model.graph.io.GraphDto
-import model.graph.io.GraphType
-import model.graph.io.convertToDto
 
 fun saveGraphToJson(graph: Graph<String, String>, file: File) {
     val json = Json { prettyPrint = true; ignoreUnknownKeys = true }

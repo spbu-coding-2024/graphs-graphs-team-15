@@ -9,4 +9,6 @@ interface Graph<E, V> {
 
     fun removeEdge(e: E): Boolean
     fun removeVertex(v: V): Boolean
+
+    fun clear()
 }
