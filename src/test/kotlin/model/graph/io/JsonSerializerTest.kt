@@ -1,13 +1,11 @@
 package model.graph.io
 
-import loadGraphFromJson
 import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import model.graph.WeightedUndirectedGraph
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import saveGraphToJson
 import java.io.File
 
 class JsonSerializerTest {
