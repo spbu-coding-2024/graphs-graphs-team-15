@@ -14,7 +14,7 @@ val sampleGraph: Graph<String, String> = UndirectedGraph()
 @Preview
 fun App() {
     MaterialTheme {
-        MainScreen(MainScreenViewModel(sampleGraph))
+        MainScreen(MainScreenViewModel())
     }
 }
 

@@ -10,7 +10,7 @@ object GraphColors {
     }
 
     object Edge {
-        val default = Color.Black
-        val highlighted = Color(0xFFFF69B4)
+        val default = Color(0xFF808080)     // Gray
+        val highlighted = Color(0xFFFF69B4) // Pink
     }
 }

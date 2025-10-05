@@ -28,7 +28,7 @@ fun <E, V> EdgeView(
                 viewModel.v.y.toPx() + viewModel.v.radius.toPx(),
             ),
             color = viewModel.color,
-            strokeWidth = 2.0f
+            strokeWidth = 5.0f
         )
     }
     if (viewModel.labelVisible) {
