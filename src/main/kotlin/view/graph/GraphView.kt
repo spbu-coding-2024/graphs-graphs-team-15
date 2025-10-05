@@ -27,7 +27,8 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import model.graph.io.chooseFileToLoad
 import model.graph.io.chooseFileToSave
-import view.dialog.PopupContent
+import view.dialog.PopupEdge
+import view.dialog.PopupVertex
 import viewmodel.graph.GraphViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -51,7 +52,6 @@ fun <E, V>GraphView(
             }
         }
     ) {
-
         Row(
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -102,10 +102,10 @@ fun <E, V>GraphView(
                 onDismissRequest = { viewModel.onVertexPopupDismiss() },
                 properties = PopupProperties(focusable = true)
             ) {
-                PopupContent(
+                PopupVertex(
                     onConfirm = { text ->
                         viewModel.onVertexPopupConfirm(
-                            text as V,
+                            text,
                             popupPosition.x.dp,
                             popupPosition.y.dp
                         )
@@ -127,10 +127,8 @@ fun <E, V>GraphView(
                 onDismissRequest = { viewModel.onEdgePopupDismiss() },
                 properties = PopupProperties(focusable = true)
             ) {
-                PopupContent(
-                    onConfirm = { text ->
-                        viewModel.onEdgePopupConfirm(text as E)
-                    },
+                PopupEdge(
+                    onConfirm = viewModel::onEdgePopupConfirm,
                     onDismiss = {
                         viewModel.onEdgePopupDismiss()
                     }

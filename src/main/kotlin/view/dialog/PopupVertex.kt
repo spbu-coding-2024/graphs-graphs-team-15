@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PopupContent(
+fun PopupVertex(
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -23,7 +23,7 @@ fun PopupContent(
     ) {
 
         Column(modifier = Modifier.padding(8.dp)) {
-            Text("Введите значение")
+            Text("Введите имя вершины")
             Spacer(Modifier.height(8.dp))
             TextField(
                 value = text,
