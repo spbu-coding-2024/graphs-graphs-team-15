@@ -1,11 +1,13 @@
 package view.graph
 
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -37,6 +39,8 @@ fun <E, V>GraphView(
     viewModel: GraphViewModel<E, V>,
 ) {
     var popupPosition by remember { mutableStateOf(Offset.Zero) }
+    var canvasOffset by remember { mutableStateOf(Offset.Zero) }
+    var scale by remember { mutableStateOf(1f) }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -45,11 +49,23 @@ fun <E, V>GraphView(
                 viewModel.onCanvasClick()
             }
         }
+        .pointerInput(Unit) {
+            detectDragGestures { change, dragAmount ->
+                change.consume()
+                canvasOffset += dragAmount
+            }
+
+        }
         .onPointerEvent(PointerEventType.Press) { event ->
             popupPosition = event.changes[0].position
             if (event.buttons.isSecondaryPressed) {
                 viewModel.onRightClick()
             }
+        }
+        .onPointerEvent(PointerEventType.Scroll) { event ->
+            val scrollDelta = event.changes[0].scrollDelta.y
+            val zoomFactor = 1f + scrollDelta * 0.1f
+            scale *= zoomFactor
         }
     ) {
         Row(
@@ -80,15 +96,21 @@ fun <E, V>GraphView(
             }
         }
 
-
         viewModel.edges.forEach { e ->
-            EdgeView(e, Modifier)
+            EdgeView(
+                e,
+                Modifier,
+                canvasOffset,
+                scale
+            )
         }
         viewModel.vertices.forEach { v ->
             VertexView(
                 v,
                 onVertexClick = { viewModel.onVertexClick(v) },
-                Modifier
+                Modifier,
+                canvasOffset,
+                scale
             )
         }
 
@@ -106,8 +128,8 @@ fun <E, V>GraphView(
                     onConfirm = { text ->
                         viewModel.onVertexPopupConfirm(
                             text,
-                            popupPosition.x.dp,
-                            popupPosition.y.dp
+                            (popupPosition.x - canvasOffset.x).dp,
+                            (popupPosition.y - canvasOffset.y).dp
                         )
                     },
                     onDismiss = {
