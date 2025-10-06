@@ -64,8 +64,8 @@ fun <E, V>GraphView(
         }
         .onPointerEvent(PointerEventType.Scroll) { event ->
             val scrollDelta = event.changes[0].scrollDelta.y
-            val zoomFactor = 1f - scrollDelta * 0.1f
-            scale = (scale * zoomFactor)
+            val zoomFactor = 1f + scrollDelta * 0.1f
+            scale *= zoomFactor
         }
     ) {
         Row(
