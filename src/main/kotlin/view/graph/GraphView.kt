@@ -1,11 +1,13 @@
 package view.graph
 
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -37,6 +39,7 @@ fun <E, V>GraphView(
     viewModel: GraphViewModel<E, V>,
 ) {
     var popupPosition by remember { mutableStateOf(Offset.Zero) }
+    var canvasOffset by remember { mutableStateOf(Offset.Zero) }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -44,6 +47,13 @@ fun <E, V>GraphView(
             detectTapGestures {
                 viewModel.onCanvasClick()
             }
+        }
+        .pointerInput(Unit) {
+            detectDragGestures { change, dragAmount ->
+                change.consume()
+                canvasOffset += dragAmount
+            }
+
         }
         .onPointerEvent(PointerEventType.Press) { event ->
             popupPosition = event.changes[0].position
@@ -82,13 +92,14 @@ fun <E, V>GraphView(
 
 
         viewModel.edges.forEach { e ->
-            EdgeView(e, Modifier)
+            EdgeView(e, Modifier, canvasOffset)
         }
         viewModel.vertices.forEach { v ->
             VertexView(
                 v,
                 onVertexClick = { viewModel.onVertexClick(v) },
-                Modifier
+                Modifier,
+                canvasOffset
             )
         }
 

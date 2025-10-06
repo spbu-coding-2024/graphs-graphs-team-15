@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import viewmodel.graph.VertexViewModel
@@ -17,11 +18,12 @@ import viewmodel.graph.VertexViewModel
 fun <V> VertexView(
     viewModel: VertexViewModel<V>,
     onVertexClick: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offset: Offset
 ) {
     Box(modifier = modifier
         .size(viewModel.radius * 2, viewModel.radius * 2)
-        .offset(viewModel.x, viewModel.y)
+        .offset(viewModel.x + offset.x.dp, viewModel.y + offset.y.dp)
         .background(
             color = viewModel.color,
             shape = CircleShape
