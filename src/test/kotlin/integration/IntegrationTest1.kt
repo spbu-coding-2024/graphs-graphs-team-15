@@ -10,6 +10,16 @@ import kotlin.test.assertEquals
 
 class IntegrationTest1 {
 
+    /* Взвешенный граф
+    * A - B
+    *   \ |
+    *     C - D
+    * Сохраняем граф в файл
+    * Загружем граф из этого же файла
+    * Применяем алгоритм построения минимального остовного дерева
+    * Алгоритм соответствующие рёбра перекрашивает в розовый
+    * */
+
     @Test
     fun testCreateLoadAndMstAlgorithm() {
         val graph = WeightedUndirectedGraph<String, String>()
