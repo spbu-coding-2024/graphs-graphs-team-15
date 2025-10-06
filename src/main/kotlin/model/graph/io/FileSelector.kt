@@ -5,7 +5,7 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 fun chooseFileToSave(): File? {
-    val chooser = JFileChooser().apply() {
+    val chooser = JFileChooser().apply {
         dialogTitle = "Save Graph as JSON"
         fileFilter = FileNameExtensionFilter("JSON Files", "json")
     }

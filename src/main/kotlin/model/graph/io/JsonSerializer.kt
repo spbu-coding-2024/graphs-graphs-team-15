@@ -1,13 +1,12 @@
 package model.graph.io
 
+import java.io.File
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import model.graph.WeightedDirectedGraph
 import model.graph.WeightedUndirectedGraph
-import java.io.File
-
 import model.graph.base.Graph
 
 fun saveGraphToJson(graph: Graph<String, String>, file: File) {

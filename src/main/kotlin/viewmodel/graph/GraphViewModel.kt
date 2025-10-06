@@ -1,9 +1,7 @@
 package viewmodel.graph
 
-
-import algorithm.ForceAtlas2
+import java.io.File
 import androidx.compose.runtime.*
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -15,14 +13,13 @@ import model.graph.base.Edge
 import model.graph.base.Graph
 import model.graph.base.Vertex
 import viewmodel.GraphColors
-import java.io.File
-import javax.swing.text.Position
-
 import model.graph.io.loadGraphFromJson
 import model.graph.io.saveGraphToJson
 import model.graph.weighted.WeightedEdge
 import model.graph.weighted.WeightedGraph
+import model.graph.algorithms.ForceAtlas2
 
+@Suppress("UNCHECKED_CAST")
 class GraphViewModel<E, V>(
     private val graph: Graph<E, V>,
     private val showVerticesLabels: State<Boolean>,
@@ -59,23 +56,28 @@ class GraphViewModel<E, V>(
     }
 
     fun onVertexClick(vertex: VertexViewModel<V>) {
-        if(_focusedVertex == null) {
-            vertex.focus()
-            _focusedVertex = vertex
-        } else if (_focusedVertex == vertex) {
-            vertex.unFocus()
-            _focusedVertex = null
-        } else {
-            _secondVertex = vertex
-            showEdgePopup = true
+        when (_focusedVertex) {
+            null ->  {
+                vertex.focus()
+                _focusedVertex = vertex
+            }
+            vertex -> {
+                vertex.unFocus()
+                _focusedVertex = null
+            }
+            else -> {
+                _secondVertex = vertex
+                showEdgePopup = true
+            }
         }
     }
 
     fun onEdgePopupConfirm(element: String, weight: String) {
         val first = _focusedVertex ?: return
         val second = _secondVertex ?: return
-        val correct_weight = weight.toDouble()
-        addEdgeViewModel(first, second, element as E, correct_weight)
+        val correctWeight = if (weight == "")
+            0.0 else weight.toDouble()
+        addEdgeViewModel(first, second, element as E, correctWeight)
         first.unFocus()
         _focusedVertex = null
         _secondVertex = null
@@ -113,7 +115,7 @@ class GraphViewModel<E, V>(
         weight: Double
     ) {
         val edge = if (graph is WeightedGraph) {
-            (graph as WeightedGraph).addEdge(focused.label, current.label, e, weight)
+            graph.addEdge(focused.label, current.label, e, weight)
         } else {
             graph.addEdge(focused.label, current.label, e)
         }
