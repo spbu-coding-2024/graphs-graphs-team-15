@@ -19,11 +19,12 @@ fun <V> VertexView(
     viewModel: VertexViewModel<V>,
     onVertexClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
-    offset: Offset
+    offset: Offset,
+    scale: Float
 ) {
     Box(modifier = modifier
-        .size(viewModel.radius * 2, viewModel.radius * 2)
-        .offset(viewModel.x + offset.x.dp, viewModel.y + offset.y.dp)
+        .size(viewModel.radius * 2 * scale, viewModel.radius * 2 * scale)
+        .offset(viewModel.x * scale + offset.x.dp, viewModel.y * scale + offset.y.dp)
         .background(
             color = viewModel.color,
             shape = CircleShape

@@ -40,6 +40,7 @@ fun <E, V>GraphView(
 ) {
     var popupPosition by remember { mutableStateOf(Offset.Zero) }
     var canvasOffset by remember { mutableStateOf(Offset.Zero) }
+    var scale by remember { mutableStateOf(1f) }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -60,6 +61,11 @@ fun <E, V>GraphView(
             if (event.buttons.isSecondaryPressed) {
                 viewModel.onRightClick()
             }
+        }
+        .onPointerEvent(PointerEventType.Scroll) { event ->
+            val scrollDelta = event.changes[0].scrollDelta.y
+            val zoomFactor = 1f - scrollDelta * 0.1f
+            scale = (scale * zoomFactor)
         }
     ) {
         Row(
@@ -90,16 +96,21 @@ fun <E, V>GraphView(
             }
         }
 
-
         viewModel.edges.forEach { e ->
-            EdgeView(e, Modifier, canvasOffset)
+            EdgeView(
+                e,
+                Modifier,
+                canvasOffset,
+                scale
+            )
         }
         viewModel.vertices.forEach { v ->
             VertexView(
                 v,
                 onVertexClick = { viewModel.onVertexClick(v) },
                 Modifier,
-                canvasOffset
+                canvasOffset,
+                scale
             )
         }
 

@@ -15,28 +15,29 @@ import viewmodel.graph.EdgeViewModel
 fun <E, V> EdgeView(
     viewModel: EdgeViewModel<E, V>,
     modifier: Modifier = Modifier,
-    offset: Offset
+    offset: Offset,
+    scale: Float
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
         drawLine(
             start = Offset(
-                viewModel.u.x.toPx() + viewModel.u.radius.toPx() + offset.x,
-                viewModel.u.y.toPx() + viewModel.u.radius.toPx() + offset.y,
+                (viewModel.u.x.toPx() + viewModel.u.radius.toPx()) * scale + offset.x,
+                (viewModel.u.y.toPx() + viewModel.u.radius.toPx()) * scale + offset.y,
             ),
             end = Offset(
-                viewModel.v.x.toPx() + viewModel.v.radius.toPx() + offset.x,
-                viewModel.v.y.toPx() + viewModel.v.radius.toPx() + offset.y,
+                (viewModel.v.x.toPx() + viewModel.v.radius.toPx()) * scale + offset.x,
+                (viewModel.v.y.toPx() + viewModel.v.radius.toPx()) * scale + offset.y,
             ),
             color = viewModel.color,
-            strokeWidth = 5.0f
+            strokeWidth = 5.0f * scale
         )
     }
     if (viewModel.labelVisible) {
         Text(
             modifier = Modifier
                 .offset(
-                    viewModel.u.x + (viewModel.v.x - viewModel.u.x) / 2  + offset.x.dp,
-                    viewModel.u.y + (viewModel.v.y - viewModel.u.y) / 2  + offset.y.dp
+                    (viewModel.u.x + (viewModel.v.x - viewModel.u.x) / 2) * scale  + offset.x.dp,
+                    (viewModel.u.y + (viewModel.v.y - viewModel.u.y) / 2) * scale  + offset.y.dp
                 ),
             text = viewModel.label,
         )
