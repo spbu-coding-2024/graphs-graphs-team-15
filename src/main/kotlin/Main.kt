@@ -3,12 +3,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import model.graph.base.Graph
-import model.graph.UndirectedGraph
 import view.MainScreen
 import viewmodel.MainScreenViewModel
-
-val sampleGraph: Graph<String, String> = UndirectedGraph()
 
 @Composable
 @Preview
