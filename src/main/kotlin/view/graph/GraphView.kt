@@ -117,8 +117,8 @@ fun <E, V>GraphView(
                     onConfirm = { text ->
                         viewModel.onVertexPopupConfirm(
                             text,
-                            popupPosition.x.dp,
-                            popupPosition.y.dp
+                            (popupPosition.x - canvasOffset.x).dp,
+                            (popupPosition.y - canvasOffset.y).dp
                         )
                     },
                     onDismiss = {
