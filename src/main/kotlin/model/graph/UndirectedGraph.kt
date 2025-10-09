@@ -2,9 +2,9 @@ package model.graph
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.graph.base.Vertex
 import model.graph.base.Edge
 import model.graph.base.Graph
+import model.graph.base.Vertex
 
 @Serializable
 internal data class UndirectedVertex<V>(override var label: V) : Vertex<V>
@@ -18,6 +18,7 @@ internal data class UndirectedEdge<E, V>(
     override val vertices
         get() = first to second
 }
+
 @Serializable
 @SerialName("UndirectedGraph")
 internal class UndirectedGraph<E, V> : Graph<E, V> {
@@ -32,7 +33,11 @@ internal class UndirectedGraph<E, V> : Graph<E, V> {
 
     override fun addVertex(v: V): Vertex<V> = _vertices.getOrPut(v) { UndirectedVertex(v) }
 
-    override fun addEdge(u: V, v: V, e: E): Edge<E, V> {
+    override fun addEdge(
+        u: V,
+        v: V,
+        e: E,
+    ): Edge<E, V> {
         val first = addVertex(u)
         val second = addVertex(v)
         return _edges.getOrPut(e) { UndirectedEdge(e, first, second) }

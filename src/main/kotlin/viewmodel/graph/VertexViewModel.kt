@@ -14,7 +14,7 @@ class VertexViewModel<V>(
     color: Color,
     val v: Vertex<V>,
     private val _labelVisible: State<Boolean>,
-    val radius: Dp = 25.dp
+    val radius: Dp = 25.dp,
 ) {
     var x by mutableStateOf(x)
     var y by mutableStateOf(y)
@@ -37,6 +37,7 @@ class VertexViewModel<V>(
         isFocused = true
         color = GraphColors.Vertex.focused
     }
+
     fun unFocus() {
         isFocused = false
         color = GraphColors.Vertex.unfocused

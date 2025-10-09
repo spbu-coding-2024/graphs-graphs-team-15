@@ -1,6 +1,5 @@
 package viewmodel.graph
 
-import java.io.File
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -8,16 +7,17 @@ import androidx.compose.ui.unit.dp
 import model.graph.UndirectedGraph
 import model.graph.WeightedUndirectedGraph
 import model.graph.algorithms.FindBridges
+import model.graph.algorithms.ForceAtlas2
 import model.graph.algorithms.MinimumSpanningTree
 import model.graph.base.Edge
 import model.graph.base.Graph
 import model.graph.base.Vertex
-import viewmodel.GraphColors
 import model.graph.io.loadGraphFromJson
 import model.graph.io.saveGraphToJson
 import model.graph.weighted.WeightedEdge
 import model.graph.weighted.WeightedGraph
-import model.graph.algorithms.ForceAtlas2
+import viewmodel.GraphColors
+import java.io.File
 
 @Suppress("UNCHECKED_CAST")
 class GraphViewModel<E, V>(
@@ -46,7 +46,11 @@ class GraphViewModel<E, V>(
         showVertexPopup = true
     }
 
-    fun onVertexPopupConfirm(label: String, x: Dp, y: Dp) {
+    fun onVertexPopupConfirm(
+        label: String,
+        x: Dp,
+        y: Dp,
+    ) {
         addVertexViewModel(label, x, y, GraphColors.Vertex.unfocused)
         showVertexPopup = false
     }
@@ -57,7 +61,7 @@ class GraphViewModel<E, V>(
 
     fun onVertexClick(vertex: VertexViewModel<V>) {
         when (_focusedVertex) {
-            null ->  {
+            null -> {
                 vertex.focus()
                 _focusedVertex = vertex
             }
@@ -72,11 +76,18 @@ class GraphViewModel<E, V>(
         }
     }
 
-    fun onEdgePopupConfirm(element: String, weight: String) {
+    fun onEdgePopupConfirm(
+        element: String,
+        weight: String,
+    ) {
         val first = _focusedVertex ?: return
         val second = _secondVertex ?: return
-        val correctWeight = if (weight == "")
-            0.0 else weight.toDouble()
+        val correctWeight =
+            if (weight == "") {
+                0.0
+            } else {
+                weight.toDouble()
+            }
         addEdgeViewModel(first, second, element as E, correctWeight)
         first.unFocus()
         _focusedVertex = null
@@ -94,15 +105,21 @@ class GraphViewModel<E, V>(
         _focusedVertex = null
     }
 
-    fun addVertexViewModel(label: String, x: Dp, y: Dp, color: Color) {
+    fun addVertexViewModel(
+        label: String,
+        x: Dp,
+        y: Dp,
+        color: Color,
+    ) {
         val vertex = graph.addVertex(label as V)
-        val vertexViewModel = VertexViewModel(
-            x = x,
-            y = y,
-            color = color,
-            v = vertex,
-            showVerticesLabels
-        )
+        val vertexViewModel =
+            VertexViewModel(
+                x = x,
+                y = y,
+                color = color,
+                v = vertex,
+                showVerticesLabels,
+            )
         if (!_vertices.containsKey(vertex)) {
             _vertices[vertex] = vertexViewModel
         }
@@ -112,32 +129,42 @@ class GraphViewModel<E, V>(
         focused: VertexViewModel<V>,
         current: VertexViewModel<V>,
         e: E,
-        weight: Double
+        weight: Double,
     ) {
-        val edge = if (graph is WeightedGraph) {
-            graph.addEdge(focused.label, current.label, e, weight)
-        } else {
-            graph.addEdge(focused.label, current.label, e)
-        }
-        val edgeViewModel = EdgeViewModel(
-            focused, current, edge, showEdgesLabels
-        )
+        val edge =
+            if (graph is WeightedGraph) {
+                graph.addEdge(focused.label, current.label, e, weight)
+            } else {
+                graph.addEdge(focused.label, current.label, e)
+            }
+        val edgeViewModel =
+            EdgeViewModel(
+                focused,
+                current,
+                edge,
+                showEdgesLabels,
+            )
 
-        val areConnected = _edges.keys.any {
-            it.incident(focused.v) && it.incident(current.v)
-        }
+        val areConnected =
+            _edges.keys.any {
+                it.incident(focused.v) && it.incident(current.v)
+            }
 
-        if(!areConnected && !_edges.containsKey(edge)) {
+        if (!areConnected && !_edges.containsKey(edge)) {
             _edges[edge] = edgeViewModel
         }
     }
 
-    fun applyForceAtlas2(screenWidth: Dp, screenHeight: Dp) {
-        val algorithm = ForceAtlas2(
-            graph,
-            width = screenWidth.value,
-            height = screenHeight.value
-        )
+    fun applyForceAtlas2(
+        screenWidth: Dp,
+        screenHeight: Dp,
+    ) {
+        val algorithm =
+            ForceAtlas2(
+                graph,
+                width = screenWidth.value,
+                height = screenHeight.value,
+            )
         val result = algorithm.run()
 
         result.forEach { (vertex, point) ->
@@ -151,8 +178,9 @@ class GraphViewModel<E, V>(
     fun highlightBridges() {
         _edges.values.forEach { it.resetColor() }
 
-        if (graph !is UndirectedGraph)
+        if (graph !is UndirectedGraph) {
             return
+        }
 
         val algorithm = FindBridges(graph)
         val bridges = algorithm.find()
@@ -165,8 +193,9 @@ class GraphViewModel<E, V>(
     fun highlightMst() {
         _edges.values.forEach { it.resetColor() }
 
-        if (graph !is WeightedUndirectedGraph)
+        if (graph !is WeightedUndirectedGraph) {
             return
+        }
 
         val algo = MinimumSpanningTree(graph)
         val mstEdges = algo.kruskalAlgo()
@@ -190,10 +219,12 @@ class GraphViewModel<E, V>(
         loaded.edges.forEach { e ->
             val fst = _vertices[e.vertices.first as Vertex<V>]!!
             val snd = _vertices[e.vertices.second as Vertex<V>]!!
-            val weight = if (graph is WeightedGraph<E, V>)
-                (e as WeightedEdge<E, V>).weight
-            else
-                0.0
+            val weight =
+                if (graph is WeightedGraph<E, V>) {
+                    (e as WeightedEdge<E, V>).weight
+                } else {
+                    0.0
+                }
             addEdgeViewModel(fst, snd, e.element as E, weight)
         }
     }

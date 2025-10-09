@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PopupEdge(
     onConfirm: (String, String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
@@ -20,9 +20,8 @@ fun PopupEdge(
             .padding(4.dp)
             .widthIn(min = 100.dp, max = 300.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
     ) {
-
         Column(modifier = Modifier.padding(8.dp)) {
             Text("Введите имя ребра")
             Spacer(Modifier.height(8.dp))
@@ -32,7 +31,7 @@ fun PopupEdge(
                     text = newText
                 },
                 modifier = Modifier,
-                placeholder = { Text("Введите текст" )}
+                placeholder = { Text("Введите текст") },
             )
             Spacer(Modifier.height(8.dp))
             Text("Введите вес ребра")
@@ -43,7 +42,7 @@ fun PopupEdge(
                     weight = newText
                 },
                 modifier = Modifier,
-                placeholder = { Text("Введите текст" )}
+                placeholder = { Text("Введите текст") },
             )
             Row {
                 Button(onClick = { onConfirm(text, weight) }) {

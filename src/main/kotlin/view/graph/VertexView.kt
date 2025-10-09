@@ -20,33 +20,36 @@ fun <V> VertexView(
     onVertexClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     offset: Offset,
-    scale: Float
+    scale: Float,
 ) {
-    Box(modifier = modifier
-        .size(viewModel.radius * 2 * scale, viewModel.radius * 2 * scale)
-        .offset(viewModel.x * scale + offset.x.dp, viewModel.y * scale + offset.y.dp)
-        .background(
-            color = viewModel.color,
-            shape = CircleShape
-        )
-        .pointerInput(viewModel) {
-            detectDragGestures { change, dragAmount ->
-                change.consume()
-                viewModel.onDrag(dragAmount)
-            }
-        }
-        .pointerInput(viewModel) {
-            detectTapGestures(
-                onTap = { onVertexClick?.invoke() }
-            )
-        }
+    Box(
+        modifier =
+            modifier
+                .size(viewModel.radius * 2 * scale, viewModel.radius * 2 * scale)
+                .offset(viewModel.x * scale + offset.x.dp, viewModel.y * scale + offset.y.dp)
+                .background(
+                    color = viewModel.color,
+                    shape = CircleShape,
+                )
+                .pointerInput(viewModel) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        viewModel.onDrag(dragAmount)
+                    }
+                }
+                .pointerInput(viewModel) {
+                    detectTapGestures(
+                        onTap = { onVertexClick?.invoke() },
+                    )
+                },
     ) {
         if (viewModel.labelVisible) {
             Text(
                 text = viewModel.label as String,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(0.dp, -viewModel.radius - 10.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.Center)
+                        .offset(0.dp, -viewModel.radius - 10.dp),
             )
         }
     }

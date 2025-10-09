@@ -5,7 +5,7 @@ import model.graph.base.Vertex
 import model.graph.weighted.WeightedEdge
 
 internal class MinimumSpanningTree<E, V>(val graph: WeightedUndirectedGraph<E, V>) {
-    fun kruskalAlgo() : List<WeightedEdge<E, V>> {
+    fun kruskalAlgo(): List<WeightedEdge<E, V>> {
         val mst = mutableListOf<WeightedEdge<E, V>>()
 
         val parent = mutableMapOf<Vertex<V>, Vertex<V>>()
@@ -25,7 +25,10 @@ internal class MinimumSpanningTree<E, V>(val graph: WeightedUndirectedGraph<E, V
             return parent[v]!!
         }
 
-        fun union(u: Vertex<V>, v: Vertex<V>): Boolean {
+        fun union(
+            u: Vertex<V>,
+            v: Vertex<V>,
+        ): Boolean {
             val rootU = find(u)
             val rootV = find(v)
             if (rootU == rootV) return false

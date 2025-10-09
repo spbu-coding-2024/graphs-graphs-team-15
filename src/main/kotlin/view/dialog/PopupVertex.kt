@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PopupVertex(
     onConfirm: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -19,9 +19,8 @@ fun PopupVertex(
             .padding(4.dp)
             .widthIn(min = 100.dp, max = 300.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
     ) {
-
         Column(modifier = Modifier.padding(8.dp)) {
             Text("Введите имя вершины")
             Spacer(Modifier.height(8.dp))
@@ -31,7 +30,7 @@ fun PopupVertex(
                     text = newText
                 },
                 modifier = Modifier,
-                placeholder = { Text("Введите текст" )}
+                placeholder = { Text("Введите текст") },
             )
             Spacer(Modifier.height(8.dp))
             Row {

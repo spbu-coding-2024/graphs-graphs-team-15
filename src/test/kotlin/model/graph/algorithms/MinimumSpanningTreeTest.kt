@@ -1,11 +1,10 @@
 package model.graph.algorithms
 
 import model.graph.WeightedUndirectedGraph
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class MinimumSpanningTreeTest {
-
     @Test
     fun testSingleEdgeGraph() {
         val g = WeightedUndirectedGraph<Int, String>()

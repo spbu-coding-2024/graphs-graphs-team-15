@@ -1,7 +1,6 @@
 package view.graph
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.runtime.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,44 +35,44 @@ import viewmodel.graph.GraphViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun <E, V>GraphView(
-    viewModel: GraphViewModel<E, V>,
-) {
+fun <E, V> GraphView(viewModel: GraphViewModel<E, V>) {
     var popupPosition by remember { mutableStateOf(Offset.Zero) }
     var canvasOffset by remember { mutableStateOf(Offset.Zero) }
     var scale by remember { mutableStateOf(1f) }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTapGestures {
-                viewModel.onCanvasClick()
-            }
-        }
-        .pointerInput(Unit) {
-            detectDragGestures { change, dragAmount ->
-                change.consume()
-                canvasOffset += dragAmount
-            }
-
-        }
-        .onPointerEvent(PointerEventType.Press) { event ->
-            popupPosition = event.changes[0].position
-            if (event.buttons.isSecondaryPressed) {
-                viewModel.onRightClick()
-            }
-        }
-        .onPointerEvent(PointerEventType.Scroll) { event ->
-            val scrollDelta = event.changes[0].scrollDelta.y
-            val zoomFactor = 1f + scrollDelta * 0.1f
-            scale *= zoomFactor
-        }
+    Box(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        viewModel.onCanvasClick()
+                    }
+                }
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        canvasOffset += dragAmount
+                    }
+                }
+                .onPointerEvent(PointerEventType.Press) { event ->
+                    popupPosition = event.changes[0].position
+                    if (event.buttons.isSecondaryPressed) {
+                        viewModel.onRightClick()
+                    }
+                }
+                .onPointerEvent(PointerEventType.Scroll) { event ->
+                    val scrollDelta = event.changes[0].scrollDelta.y
+                    val zoomFactor = 1f + scrollDelta * 0.1f
+                    scale *= zoomFactor
+                },
     ) {
         Row(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Button(onClick = {
                 val file = chooseFileToSave() ?: return@Button
@@ -101,7 +101,7 @@ fun <E, V>GraphView(
                 e,
                 Modifier,
                 canvasOffset,
-                scale
+                scale,
             )
         }
         viewModel.vertices.forEach { v ->
@@ -110,31 +110,32 @@ fun <E, V>GraphView(
                 onVertexClick = { viewModel.onVertexClick(v) },
                 Modifier,
                 canvasOffset,
-                scale
+                scale,
             )
         }
 
         if (viewModel.showVertexPopup) {
             Popup(
                 alignment = Alignment.TopStart,
-                offset = IntOffset(
-                    popupPosition.x.toInt(),
-                    popupPosition.y.toInt()
-                ),
+                offset =
+                    IntOffset(
+                        popupPosition.x.toInt(),
+                        popupPosition.y.toInt(),
+                    ),
                 onDismissRequest = { viewModel.onVertexPopupDismiss() },
-                properties = PopupProperties(focusable = true)
+                properties = PopupProperties(focusable = true),
             ) {
                 PopupVertex(
                     onConfirm = { text ->
                         viewModel.onVertexPopupConfirm(
                             text,
                             (popupPosition.x - canvasOffset.x).dp,
-                            (popupPosition.y - canvasOffset.y).dp
+                            (popupPosition.y - canvasOffset.y).dp,
                         )
                     },
                     onDismiss = {
                         viewModel.onVertexPopupDismiss()
-                    }
+                    },
                 )
             }
         }
@@ -142,18 +143,19 @@ fun <E, V>GraphView(
         if (viewModel.showEdgePopup) {
             Popup(
                 alignment = Alignment.TopStart,
-                offset = IntOffset(
-                    popupPosition.x.toInt(),
-                    popupPosition.y.toInt()
-                ),
+                offset =
+                    IntOffset(
+                        popupPosition.x.toInt(),
+                        popupPosition.y.toInt(),
+                    ),
                 onDismissRequest = { viewModel.onEdgePopupDismiss() },
-                properties = PopupProperties(focusable = true)
+                properties = PopupProperties(focusable = true),
             ) {
                 PopupEdge(
                     onConfirm = viewModel::onEdgePopupConfirm,
                     onDismiss = {
                         viewModel.onEdgePopupDismiss()
-                    }
+                    },
                 )
             }
         }

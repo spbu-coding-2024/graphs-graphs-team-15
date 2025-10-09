@@ -1,11 +1,10 @@
 package model.graph.algorithms
 
 import model.graph.UndirectedGraph
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class FindBridgesTest {
-
     @Test
     fun testEmptyGraphHaveNoBridges() {
         val g = UndirectedGraph<Int, String>()
@@ -70,6 +69,6 @@ class FindBridgesTest {
         val algo = FindBridges(g)
         val bridges = algo.find().map { it.element }
 
-        assertEquals(setOf(1,2), bridges.toSet())
+        assertEquals(setOf(1, 2), bridges.toSet())
     }
 }

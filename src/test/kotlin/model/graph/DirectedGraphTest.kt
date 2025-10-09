@@ -1,10 +1,9 @@
 package model.graph
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class DirectedGraphTest {
-
     @Test
     fun testCreateVertex() {
         val graph = DirectedGraph<String, String>()

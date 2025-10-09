@@ -2,23 +2,22 @@ package integration
 
 import androidx.compose.runtime.mutableStateOf
 import model.graph.WeightedUndirectedGraph
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import viewmodel.GraphColors
 import viewmodel.graph.GraphViewModel
 import java.io.File
 
 class IntegrationTest1 {
-
     /* Взвешенный граф
-    * A - B
-    *   \ |
-    *     C - D
-    * Сохраняем граф в файл
-    * Загружем граф из этого же файла
-    * Применяем алгоритм построения минимального остовного дерева
-    * Алгоритм соответствующие рёбра перекрашивает в розовый
-    * */
+     * A - B
+     *   \ |
+     *     C - D
+     * Сохраняем граф в файл
+     * Загружем граф из этого же файла
+     * Применяем алгоритм построения минимального остовного дерева
+     * Алгоритм соответствующие рёбра перекрашивает в розовый
+     * */
 
     @Test
     fun testCreateLoadAndMstAlgorithm() {
@@ -34,11 +33,12 @@ class IntegrationTest1 {
         graph.addEdge("B", "C", "BC", 3.0)
         graph.addEdge("C", "D", "CD", 4.0)
 
-        val viewModel = GraphViewModel(
-            graph,
-            mutableStateOf(true),
-            mutableStateOf(true)
-        )
+        val viewModel =
+            GraphViewModel(
+                graph,
+                mutableStateOf(true),
+                mutableStateOf(true),
+            )
 
         val file = File.createTempFile("graph", ".json")
         viewModel.saveGraph(file)
@@ -47,9 +47,10 @@ class IntegrationTest1 {
 
         viewModel.highlightMst()
 
-        val highlighted = viewModel.edges.filter { edge ->
-            edge.color == GraphColors.Edge.highlighted
-        }
+        val highlighted =
+            viewModel.edges.filter { edge ->
+                edge.color == GraphColors.Edge.highlighted
+            }
 
         val highlightedLabels: Set<String> = highlighted.map { it.label }.toSet()
 

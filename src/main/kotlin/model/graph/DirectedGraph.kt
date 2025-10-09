@@ -2,11 +2,10 @@ package model.graph
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.collections.getOrPut
-
-import model.graph.base.Vertex
 import model.graph.base.Edge
 import model.graph.base.Graph
+import model.graph.base.Vertex
+import kotlin.collections.getOrPut
 
 @Serializable
 internal data class DirectedVertex<V>(override var label: V) : Vertex<V>
@@ -35,7 +34,11 @@ internal class DirectedGraph<E, V> : Graph<E, V> {
 
     override fun addVertex(v: V): Vertex<V> = _vertices.getOrPut(v) { DirectedVertex(v) }
 
-    override fun addEdge(u: V, v: V, e: E): Edge<E, V> {
+    override fun addEdge(
+        u: V,
+        v: V,
+        e: E,
+    ): Edge<E, V> {
         val from = addVertex(u)
         val to = addVertex(v)
         return _edges.getOrPut(e) { DirectedEdge(e, from, to) }
