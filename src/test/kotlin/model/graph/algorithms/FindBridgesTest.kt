@@ -1,10 +1,8 @@
 package model.graph.algorithms
 
 import model.graph.UndirectedGraph
-import org.junit.Assert.assertTrue
-import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertSame
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 
 class FindBridgesTest {
 

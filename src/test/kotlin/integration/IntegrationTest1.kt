@@ -2,11 +2,11 @@ package integration
 
 import androidx.compose.runtime.mutableStateOf
 import model.graph.WeightedUndirectedGraph
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 import viewmodel.GraphColors
 import viewmodel.graph.GraphViewModel
 import java.io.File
-import kotlin.test.assertEquals
 
 class IntegrationTest1 {
 

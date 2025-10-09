@@ -1,8 +1,8 @@
 package model.graph.algorithms
 
 import model.graph.WeightedUndirectedGraph
-import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 
 class MinimumSpanningTreeTest {
 

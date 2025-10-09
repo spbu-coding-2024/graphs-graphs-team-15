@@ -4,9 +4,8 @@ import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import model.graph.WeightedDirectedGraph
 import model.graph.WeightedUndirectedGraph
-import org.junit.Assert.assertNull
-import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 
 class DtoConverterTest {
 
