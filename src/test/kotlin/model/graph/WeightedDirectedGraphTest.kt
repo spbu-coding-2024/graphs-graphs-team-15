@@ -1,13 +1,9 @@
 package model.graph
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
-import kotlin.test.assertSame
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class WeightedDirectedGraphTest {
-
     @Test
     fun testCreateVertex() {
         val graph = WeightedDirectedGraph<String, String>()

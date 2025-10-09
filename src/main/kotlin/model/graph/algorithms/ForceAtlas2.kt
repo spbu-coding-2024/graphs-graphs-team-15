@@ -1,10 +1,10 @@
 package model.graph.algorithms
 
-import kotlin.math.sqrt
-import kotlin.math.min
-import kotlin.random.Random
 import model.graph.base.Graph
 import model.graph.base.Vertex
+import kotlin.math.min
+import kotlin.math.sqrt
+import kotlin.random.Random
 
 data class Point(var x: Double, var y: Double)
 
@@ -15,7 +15,7 @@ class ForceAtlas2<E, V>(
     private val iterations: Int = 500,
     private val area: Double = 10000.0,
     private val gravity: Double = 1.0,
-    private val speed: Double = 1.0
+    private val speed: Double = 1.0,
 ) {
     private val positions = mutableMapOf<Vertex<V>, Point>()
     private val forces = mutableMapOf<Vertex<V>, Point>()
@@ -95,7 +95,7 @@ class ForceAtlas2<E, V>(
         return positions.mapValues { (_, point) ->
             Point(
                 x = padding + ((point.x - minX) / rangeX) * availableWidth,
-                y = padding + ((point.y - minY) / rangeY) * availableHeight
+                y = padding + ((point.y - minY) / rangeY) * availableHeight,
             )
         }
     }

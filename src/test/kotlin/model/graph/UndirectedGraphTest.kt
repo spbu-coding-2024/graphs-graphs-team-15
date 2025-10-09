@@ -1,13 +1,9 @@
 package model.graph
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Test
-import kotlin.test.assertSame
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class UndirectedGraphTest {
-
     @Test
     fun testCreateVertex() {
         val graph = UndirectedGraph<String, String>()

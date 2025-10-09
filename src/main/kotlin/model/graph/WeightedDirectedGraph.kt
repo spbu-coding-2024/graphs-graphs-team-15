@@ -2,8 +2,8 @@ package model.graph
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.graph.base.Vertex
 import model.graph.base.Edge
+import model.graph.base.Vertex
 import model.graph.weighted.WeightedEdge
 import model.graph.weighted.WeightedGraph
 
@@ -15,7 +15,7 @@ internal data class WeightedDirectedEdge<V, E>(
     override var element: E,
     val from: Vertex<V>,
     val to: Vertex<V>,
-    override var weight: Double
+    override var weight: Double,
 ) : WeightedEdge<E, V> {
     override val vertices
         get() = from to to
@@ -33,10 +33,13 @@ internal class WeightedDirectedGraph<E, V> : WeightedGraph<E, V> {
     override val edges: Collection<WeightedEdge<E, V>>
         get() = _edges.values
 
-    override fun addVertex(v: V): Vertex<V> =
-        _vertices.getOrPut(v) { WeightedDirectedVertex(v) }
+    override fun addVertex(v: V): Vertex<V> = _vertices.getOrPut(v) { WeightedDirectedVertex(v) }
 
-    override fun addEdge(u: V, v: V, e: E): Edge<E, V> {
+    override fun addEdge(
+        u: V,
+        v: V,
+        e: E,
+    ): Edge<E, V> {
         return addEdge(u, v, e, 0.0)
     }
 
@@ -51,7 +54,12 @@ internal class WeightedDirectedGraph<E, V> : WeightedGraph<E, V> {
         return true
     }
 
-    override fun addEdge(u: V, v: V, e: E, weight: Double): WeightedEdge<E, V> {
+    override fun addEdge(
+        u: V,
+        v: V,
+        e: E,
+        weight: Double,
+    ): WeightedEdge<E, V> {
         val first = addVertex(u)
         val second = addVertex(v)
         val edge = WeightedDirectedEdge(e, first, second, weight)
@@ -59,7 +67,10 @@ internal class WeightedDirectedGraph<E, V> : WeightedGraph<E, V> {
         return _edges.getOrPut(e) { edge }
     }
 
-    override fun setEdgeWeight(e: E, weight: Double) {
+    override fun setEdgeWeight(
+        e: E,
+        weight: Double,
+    ) {
         _edges[e]?.weight = weight
     }
 

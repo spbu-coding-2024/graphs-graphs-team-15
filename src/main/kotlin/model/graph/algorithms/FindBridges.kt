@@ -26,7 +26,10 @@ internal class FindBridges<E, V>(val graph: UndirectedGraph<E, V>) {
         return bridges
     }
 
-    private fun dfs(v: Vertex<V>, parent: Vertex<V>?) {
+    private fun dfs(
+        v: Vertex<V>,
+        parent: Vertex<V>?,
+    ) {
         visited += v
         tin[v] = timer
         fup[v] = timer

@@ -29,7 +29,7 @@ class MainScreenViewModel<E, V>() {
         private set
 
     var graphViewModel by mutableStateOf(
-        GraphViewModel(createGraph(GraphType.UNDIRECTED), _showVerticesLabels, _showEdgesLabels)
+        GraphViewModel(createGraph(GraphType.UNDIRECTED), _showVerticesLabels, _showEdgesLabels),
     )
         private set
 
@@ -38,7 +38,10 @@ class MainScreenViewModel<E, V>() {
         graphViewModel.edges.forEach { e -> e.color = GraphColors.Edge.default }
     }
 
-    fun applyLayoutAlgorithm(screenWidth: Dp, screenHeight: Dp) {
+    fun applyLayoutAlgorithm(
+        screenWidth: Dp,
+        screenHeight: Dp,
+    ) {
         graphViewModel.applyForceAtlas2(screenWidth, screenHeight)
     }
 

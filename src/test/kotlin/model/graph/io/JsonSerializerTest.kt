@@ -3,13 +3,11 @@ package model.graph.io
 import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import model.graph.WeightedUndirectedGraph
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class JsonSerializerTest {
-
     @Test
     fun testSaveAndLoadUndirectedGraph() {
         val g = UndirectedGraph<String, String>()
