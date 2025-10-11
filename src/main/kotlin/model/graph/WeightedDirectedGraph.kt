@@ -1,16 +1,12 @@
 package model.graph
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import model.graph.base.Edge
 import model.graph.base.Vertex
 import model.graph.weighted.WeightedEdge
 import model.graph.weighted.WeightedGraph
 
-@Serializable
 internal data class WeightedDirectedVertex<V>(override var label: V) : Vertex<V>
 
-@Serializable
 internal data class WeightedDirectedEdge<V, E>(
     override var element: E,
     val from: Vertex<V>,
@@ -21,8 +17,6 @@ internal data class WeightedDirectedEdge<V, E>(
         get() = from to to
 }
 
-@Serializable
-@SerialName("WeightedDirectedGraph")
 internal class WeightedDirectedGraph<E, V> : WeightedGraph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, WeightedEdge<E, V>>()

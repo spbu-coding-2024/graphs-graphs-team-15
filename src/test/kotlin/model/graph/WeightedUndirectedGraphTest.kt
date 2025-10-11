@@ -43,6 +43,22 @@ class WeightedUndirectedGraphTest {
     }
 
     @Test
+    fun testSetEdgeWeight() {
+        val graph = WeightedUndirectedGraph<String, String>()
+
+        graph.addVertex("A")
+        graph.addVertex("B")
+
+        graph.addEdge("A", "B", "e1")
+
+        graph.setEdgeWeight("e1", 10.0)
+        graph.setEdgeWeight("e2", 20.0)
+
+        assertEquals(1, graph.edges.size)
+        assertEquals(10.0, graph.getEdgeWeight("e1"))
+    }
+
+    @Test
     fun testEdgeNotDuplicates() {
         val graph = WeightedUndirectedGraph<String, String>()
 
@@ -58,27 +74,17 @@ class WeightedUndirectedGraphTest {
     }
 
     @Test
-    fun testSetEdgeWeight() {
-        val graph = WeightedUndirectedGraph<String, String>()
-        graph.addVertex("A")
-        graph.addVertex("B")
-
-        graph.addEdge("A", "B", "e1", 1.0)
-        graph.setEdgeWeight("e1", 10.0)
-
-        assertEquals(10.0, graph.getEdgeWeight("e1"))
-    }
-
-    @Test
     fun testDeleteEdge() {
         val graph = WeightedUndirectedGraph<String, String>()
         graph.addVertex("A")
         graph.addVertex("B")
 
         graph.addEdge("A", "B", "e1", 5.0)
-        val removed = graph.removeEdge("e1")
+        val removedTrue = graph.removeEdge("e1")
+        val removedFalse = graph.removeEdge("e2")
 
-        assertTrue(removed)
+        assertTrue(removedTrue)
+        assertFalse(removedFalse)
         assertTrue(graph.edges.isEmpty())
     }
 
@@ -88,11 +94,13 @@ class WeightedUndirectedGraphTest {
         graph.addEdge("A", "B", "e1", 2.0)
         graph.addEdge("B", "C", "e2", 3.0)
 
-        val removed = graph.removeVertex("B")
+        val removedTrue = graph.removeVertex("B")
+        val removedFalse = graph.removeVertex("D")
 
-        assertTrue(removed)
+        assertTrue(removedTrue)
+        assertFalse(removedFalse)
         assertEquals(2, graph.vertices.size)
-        assertTrue(graph.edges.isEmpty()) // все рёбра были связаны с B
+        assertTrue(graph.edges.isEmpty())
     }
 
     @Test
@@ -100,5 +108,19 @@ class WeightedUndirectedGraphTest {
         val graph = WeightedUndirectedGraph<String, String>()
 
         assertNull(graph.getEdgeWeight("eX"))
+    }
+
+    @Test
+    fun testClearGraph() {
+        val graph = WeightedUndirectedGraph<String, String>()
+        graph.addVertex("A")
+        graph.addVertex("B")
+
+        graph.addEdge("A", "B", "e1", 5.0)
+
+        graph.clear()
+
+        assertTrue(graph.vertices.isEmpty())
+        assertTrue(graph.edges.isEmpty())
     }
 }

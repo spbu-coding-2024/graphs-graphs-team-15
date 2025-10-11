@@ -57,7 +57,7 @@ class DirectedGraphTest {
         val graph = DirectedGraph<String, String>()
         val v1 = graph.addVertex("X")
         val v2 = graph.addVertex("Y")
-        val v3 = graph.addVertex("")
+        val v3 = graph.addVertex("Z")
 
         val edge = graph.addEdge("X", "Y", "e")
 
@@ -80,6 +80,17 @@ class DirectedGraphTest {
     }
 
     @Test
+    fun testRemoveUnexistentEdge() {
+        val graph = DirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        val removed = graph.removeEdge("e2")
+
+        assertFalse(removed)
+        assertTrue(!graph.edges.isEmpty())
+    }
+
+    @Test
     fun testRemoveVertexDeleteVertexAndIncidentEdges() {
         val graph = DirectedGraph<String, String>()
 
@@ -89,6 +100,40 @@ class DirectedGraphTest {
 
         assertTrue(removed)
         assertEquals(2, graph.vertices.size)
+        assertTrue(graph.edges.isEmpty())
+    }
+
+    @Test
+    fun testRemoveUnexistentVertex() {
+        val graph = DirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        val removed = graph.removeVertex("C")
+
+        assertFalse(removed)
+        assertEquals(2, graph.vertices.size)
+    }
+
+    @Test
+    fun testClearAll() {
+        val graph = DirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        graph.addEdge("B", "C", "e2")
+        graph.addEdge("C", "D", "e3")
+
+        graph.clear()
+
+        assertTrue(graph.vertices.isEmpty())
+        assertTrue(graph.edges.isEmpty())
+    }
+
+    @Test
+    fun testClearAllOnEmptyGraph() {
+        val graph = DirectedGraph<String, String>()
+        graph.clear()
+
+        assertTrue(graph.vertices.isEmpty())
         assertTrue(graph.edges.isEmpty())
     }
 }

@@ -4,8 +4,12 @@ import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import model.graph.WeightedDirectedGraph
 import model.graph.WeightedUndirectedGraph
+import model.graph.base.Edge
+import model.graph.base.Graph
+import model.graph.base.Vertex
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class DtoConverterTest {
     @Test
@@ -57,5 +61,42 @@ class DtoConverterTest {
         assertEquals(setOf("A", "B"), dto.vertices.map { it.label }.toSet())
         assertEquals(96, dto.edges.first().element)
         assertEquals(3.14, dto.edges.first().weight)
+    }
+
+    @Test
+    fun testConvertUnknownGraphType() {
+        val unknownGraph =
+            object : Graph<String, String> {
+                override val vertices: Collection<Vertex<String>> = emptyList()
+                override val edges: Collection<Edge<String, String>> = emptyList()
+
+                override fun addEdge(
+                    u: String,
+                    v: String,
+                    e: String,
+                ): Edge<String, String> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun addVertex(v: String): Vertex<String> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun removeEdge(e: String): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun removeVertex(v: String): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun clear() {
+                    TODO("Not yet implemented")
+                }
+            }
+
+        assertThrows<IllegalArgumentException> {
+            convertToDto(unknownGraph)
+        }
     }
 }

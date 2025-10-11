@@ -57,7 +57,7 @@ class UndirectedGraphTest {
         val graph = UndirectedGraph<String, String>()
         val v1 = graph.addVertex("X")
         val v2 = graph.addVertex("Y")
-        val v3 = graph.addVertex("")
+        val v3 = graph.addVertex("Z")
 
         val edge = graph.addEdge("X", "Y", "e")
 
@@ -69,14 +69,23 @@ class UndirectedGraphTest {
     @Test
     fun testRemoveEdgeDeleteEdge() {
         val graph = UndirectedGraph<String, String>()
-        graph.addVertex("A")
-        graph.addVertex("B")
 
         graph.addEdge("A", "B", "e1")
         val removed = graph.removeEdge("e1")
 
         assertTrue(removed)
         assertTrue(graph.edges.isEmpty())
+    }
+
+    @Test
+    fun testRemoveUnexistentEdge() {
+        val graph = UndirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        val removed = graph.removeEdge("e2")
+
+        assertFalse(removed)
+        assertTrue(!graph.edges.isEmpty())
     }
 
     @Test
@@ -89,6 +98,40 @@ class UndirectedGraphTest {
 
         assertTrue(removed)
         assertEquals(2, graph.vertices.size)
+        assertTrue(graph.edges.isEmpty())
+    }
+
+    @Test
+    fun testRemoveUnexistentVertex() {
+        val graph = UndirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        val removed = graph.removeVertex("C")
+
+        assertFalse(removed)
+        assertEquals(2, graph.vertices.size)
+    }
+
+    @Test
+    fun testClearAll() {
+        val graph = UndirectedGraph<String, String>()
+
+        graph.addEdge("A", "B", "e1")
+        graph.addEdge("B", "C", "e2")
+        graph.addEdge("C", "D", "e3")
+
+        graph.clear()
+
+        assertTrue(graph.vertices.isEmpty())
+        assertTrue(graph.edges.isEmpty())
+    }
+
+    @Test
+    fun testClearAllOnEmptyGraph() {
+        val graph = UndirectedGraph<String, String>()
+        graph.clear()
+
+        assertTrue(graph.vertices.isEmpty())
         assertTrue(graph.edges.isEmpty())
     }
 }

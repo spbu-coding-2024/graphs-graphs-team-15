@@ -1,16 +1,12 @@
 package model.graph
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import model.graph.base.Edge
 import model.graph.base.Graph
 import model.graph.base.Vertex
 import kotlin.collections.getOrPut
 
-@Serializable
 internal data class DirectedVertex<V>(override var label: V) : Vertex<V>
 
-@Serializable
 internal data class DirectedEdge<E, V>(
     override var element: E,
     val from: Vertex<V>,
@@ -20,8 +16,6 @@ internal data class DirectedEdge<E, V>(
         get() = from to to
 }
 
-@Serializable
-@SerialName("DirectedGraph")
 internal class DirectedGraph<E, V> : Graph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, Edge<E, V>>()
