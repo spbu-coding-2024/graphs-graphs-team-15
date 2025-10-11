@@ -28,6 +28,23 @@ class GraphViewModel<E, V>(
     private val _vertices = mutableStateMapOf<Vertex<V>, VertexViewModel<V>>()
     private val _edges = mutableStateMapOf<Edge<E, V>, EdgeViewModel<E, V>>()
 
+    init {
+        graph.vertices.forEach { v ->
+            addVertexViewModel(v.label.toString(), GraphColors.Vertex.unfocused)
+        }
+        graph.edges.forEach { e ->
+            val fst = _vertices[e.vertices.first as Vertex<V>]!!
+            val snd = _vertices[e.vertices.second as Vertex<V>]!!
+            val weight =
+                if (graph is WeightedGraph<E, V>) {
+                    (e as WeightedEdge<E, V>).weight
+                } else {
+                    0.0
+                }
+            addEdgeViewModel(fst, snd, e.element, weight)
+        }
+    }
+
     val vertices: Collection<VertexViewModel<V>>
         get() = _vertices.values
 
@@ -51,7 +68,7 @@ class GraphViewModel<E, V>(
         x: Dp,
         y: Dp,
     ) {
-        addVertexViewModel(label, x, y, GraphColors.Vertex.unfocused)
+        addVertexViewModel(label, GraphColors.Vertex.unfocused, x, y)
         showVertexPopup = false
     }
 
@@ -107,9 +124,9 @@ class GraphViewModel<E, V>(
 
     fun addVertexViewModel(
         label: String,
-        x: Dp,
-        y: Dp,
         color: Color,
+        x: Dp = 0.dp,
+        y: Dp = 0.dp,
     ) {
         val vertex = graph.addVertex(label as V)
         val vertexViewModel =
@@ -214,7 +231,7 @@ class GraphViewModel<E, V>(
         clearAll()
 
         loaded.vertices.forEach { v ->
-            addVertexViewModel(v.label, 0.dp, 0.dp, GraphColors.Vertex.unfocused)
+            addVertexViewModel(v.label,GraphColors.Vertex.unfocused)
         }
         loaded.edges.forEach { e ->
             val fst = _vertices[e.vertices.first as Vertex<V>]!!
