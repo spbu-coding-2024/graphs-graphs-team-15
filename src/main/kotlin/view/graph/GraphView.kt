@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -27,10 +26,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
-import model.graph.io.chooseFileToLoad
-import model.graph.io.chooseFileToSave
 import view.dialog.PopupEdge
 import view.dialog.PopupVertex
+import view.dialog.chooseFileToLoad
+import view.dialog.chooseFileToSave
 import viewmodel.graph.GraphViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)

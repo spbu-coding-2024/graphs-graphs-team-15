@@ -1,15 +1,11 @@
 package model.graph
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import model.graph.base.Edge
 import model.graph.base.Graph
 import model.graph.base.Vertex
 
-@Serializable
 internal data class UndirectedVertex<V>(override var label: V) : Vertex<V>
 
-@Serializable
 internal data class UndirectedEdge<E, V>(
     override var element: E,
     var first: Vertex<V>,
@@ -19,8 +15,6 @@ internal data class UndirectedEdge<E, V>(
         get() = first to second
 }
 
-@Serializable
-@SerialName("UndirectedGraph")
 internal class UndirectedGraph<E, V> : Graph<E, V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _edges = hashMapOf<E, Edge<E, V>>()

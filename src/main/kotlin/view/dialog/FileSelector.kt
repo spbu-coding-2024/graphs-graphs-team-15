@@ -1,4 +1,4 @@
-package model.graph.io
+package view.dialog
 
 import java.io.File
 import javax.swing.JFileChooser
