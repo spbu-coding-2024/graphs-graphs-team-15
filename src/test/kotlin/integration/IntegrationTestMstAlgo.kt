@@ -5,10 +5,8 @@ import androidx.compose.ui.unit.dp
 import model.graph.UndirectedGraph
 import model.graph.WeightedUndirectedGraph
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import viewmodel.GraphColors
-import viewmodel.MainScreenViewModel
 import viewmodel.graph.GraphViewModel
 import java.io.File
 

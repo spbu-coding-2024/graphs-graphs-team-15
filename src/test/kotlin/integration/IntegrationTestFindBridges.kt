@@ -12,7 +12,6 @@ import viewmodel.graph.GraphViewModel
 import java.io.File
 
 class IntegrationTestFindBridges {
-
     /* Граф
      * A - B
      * Создаём модель взвешенного графа

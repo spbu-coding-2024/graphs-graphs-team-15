@@ -231,7 +231,7 @@ class GraphViewModel<E, V>(
         clearAll()
 
         loaded.vertices.forEach { v ->
-            addVertexViewModel(v.label,GraphColors.Vertex.unfocused)
+            addVertexViewModel(v.label, GraphColors.Vertex.unfocused)
         }
         loaded.edges.forEach { e ->
             val fst = _vertices[e.vertices.first as Vertex<V>]!!
