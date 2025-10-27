@@ -2,8 +2,6 @@ package model.graph.algorithms
 
 import model.graph.base.Graph
 import model.graph.base.Vertex
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sqrt
 import kotlin.random.Random
 
@@ -45,9 +43,9 @@ class ForceAtlas2<E, V>(
                     if (u == v) continue
                     val deltaX = positions[v]!!.x - positions[u]!!.x
                     val deltaY = positions[v]!!.y - positions[u]!!.y
-                    val dist = sqrt(deltaX * deltaX + deltaY * deltaY)
+                    val dist = deltaX * deltaX + deltaY * deltaY
                     if (dist > 0) {
-                        val factor = scalingRatio * scalingRatio / dist
+                        val factor = scalingRatio / dist
                         forces[v]!!.x += deltaX / dist * factor
                         forces[v]!!.y += deltaY / dist * factor
                     }
@@ -79,69 +77,6 @@ class ForceAtlas2<E, V>(
                     forces[v]!!.y += deltaY / dist * factor
                 }
             }
-
-            var totalSwinging = 0.0
-            var totalEffectiveTraction = 0.0
-            val jitterTolerance = 1.0
-
-            for (v in graph.vertices) {
-                val swinging =
-                    sqrt(
-                        (forcesOld[v]!!.x - forces[v]!!.x) *
-                            (forcesOld[v]!!.x - forces[v]!!.x) +
-                            (forcesOld[v]!!.y - forces[v]!!.y) *
-                            (forcesOld[v]!!.y - forces[v]!!.y),
-                    )
-                totalSwinging += 1 * swinging
-                totalEffectiveTraction +=
-                    0.5 *
-                    sqrt(
-                        (forcesOld[v]!!.x + forces[v]!!.x) *
-                            (forcesOld[v]!!.x + forces[v]!!.x) +
-                            (forcesOld[v]!!.y + forces[v]!!.y) *
-                            (forcesOld[v]!!.y + forces[v]!!.y),
-                    )
-            }
-
-            val estimatedOptimalJitterTolerance = 0.5 * sqrt(graph.vertices.size.toDouble())
-            val minJT = sqrt(estimatedOptimalJitterTolerance)
-            val maxJT = 10.0
-            var jt =
-                jitterTolerance *
-                    max(
-                        minJT,
-                        min(
-                            maxJT,
-                            estimatedOptimalJitterTolerance * totalEffectiveTraction / (
-                                graph.vertices.size * graph.vertices.size
-                            ),
-                        ),
-                    )
-            val minSpeedEfficiency = 0.05
-
-            if (totalEffectiveTraction > 0 && totalSwinging / totalEffectiveTraction > 2) {
-                if (speedEfficiency > minSpeedEfficiency) {
-                    speedEfficiency *= 0.5
-                }
-                jt = max(jt, jitterTolerance)
-            }
-            var targetSpeed: Double
-            if (totalSwinging == 0.0) {
-                targetSpeed = 1.7976931348623157E308
-            } else {
-                targetSpeed = jt * speedEfficiency * totalEffectiveTraction / totalSwinging
-            }
-
-            if (totalSwinging > jt * totalEffectiveTraction) {
-                if (speedEfficiency > minSpeedEfficiency) {
-                    speedEfficiency *= 0.7
-                }
-            } else {
-                speedEfficiency *= 1.3
-            }
-
-            val maxRise = 0.5
-            speed += min(targetSpeed - speed, maxRise * speed)
 
             for (v in graph.vertices) {
                 val swinging =
